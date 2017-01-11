@@ -83,9 +83,24 @@ class Hospital {
     this.employeesList.push(new Employee(name, position, username, password))
     return this.employeesList
   }
+  removeEmployee(name){
+
+  }
   addPatient(name, diagnosis){
     this.patientsList.push(new Patient(this.patientsList[this.patientsList.length-1].id+1, name, diagnosis))
     return this.patientsList
+  }
+  view_records(patient_id){
+
+  }
+  addPatientRecord(patient_id){
+
+  }
+  removePatientRecord(patient_id, record_id){
+
+  }
+  removePatient(id){
+
   }
   get list_karyawan(){
     let tabelKaryawan = new Table({
