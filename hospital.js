@@ -182,3 +182,7 @@ class Hospital {
       })
     }
 }
+
+var aplikasi = new Hospital("Mistic Hospital", "Jakarta")
+aplikasi.tampilRS()
+aplikasi.user()1
