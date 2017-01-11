@@ -2,11 +2,13 @@
 const faker = require('faker')
 const readline = require('readline');
 const fs = require('fs')
+const chalk = require('chalk');
+const Table = require('cli-table');
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
 
 class Interface{
   constructor(){
@@ -15,8 +17,8 @@ class Interface{
     this.active = {}
   }
   header(){
-    console.log(`Welcome to ${rumahSehat.name} ${rumahSehat.location} Hospital`);
-    console.log("-------------------------------------------");
+    console.log(`Welcome to ${chalk.bold.blue(rumahSehat.name)} ${chalk.bold.blue(rumahSehat.location)} Hospital`);
+    console.log(chalk.bold.green("-------------------------------------------"));
   }
   login(){
     rl.prompt()
@@ -28,7 +30,7 @@ class Interface{
           this.mainPage()
           this.option()
         } else {
-          console.log("user atau password anda salah")
+          console.log(chalk.bold.red("user atau password anda salah"))
           rl.close()
         }
         rl.close()
@@ -48,7 +50,7 @@ class Interface{
   };
   mainPage(){
     console.log("-----------------------------------");
-    console.log(`Selamat datang, ${this.active.name}. Your access level is ${this.active.position}`);
+    console.log(`Selamat datang, ${chalk.bold.blue(this.active.name)}. Anda Memiliki Akses sebagai ${chalk.bold.blue(this.active.position)}`);
     console.log("-----------------------------------");
   }
   option(){
@@ -56,6 +58,14 @@ class Interface{
       console.log(`Apa yang ingin anda lakukan?\n Options:\n 1 -- list_patients\n 2 -- view_records <patient_id>\n 3 -- add_record <patient_id> \n 4 -- remove_record <patient_id><record_id>\n`)
     } else if(this.active.position === "administrator"){
       console.log(`Apa yang ingin anda lakukan?\n Options:\n 1 -- list_karyawan\n 2 -- tambah_karyawan\n 3 -- pecat_karyawan\n 4 -- tambah_pasien\n`)
+    };
+    this.choose()
+  }
+  choose(){
+    if (this.active.position === "dokter"){
+
+    } else if(this.active.position === "administrator"){
+
     };
   }
 }
@@ -67,10 +77,36 @@ class Hospital {
     this.patients = patients
     this.location = location
     this.employeesList = []
+    this.patientsList = [new Patient(0, "Master Yoda", "OP")] //dummy patient id 0
   }
   addEmployee(name, position, username, password){
     this.employeesList.push(new Employee(name, position, username, password))
     return this.employeesList
+  }
+  addPatient(name, diagnosis){
+    this.patientsList.push(new Patient(this.patientsList[this.patientsList.length-1].id+1, name, diagnosis))
+    return this.patientsList
+  }
+  get list_karyawan(){
+    let tabelKaryawan = new Table({
+        head: ['Nama Karyawan','Jabatan']
+      , colWidths: [30, 15]
+    });
+    this.employeesList.forEach(function(val){
+      tabelKaryawan.push([val.name, val.position])
+    })
+    return tabelKaryawan.toString()
+
+  }
+  get list_patients(){
+    let tabelpasien = new Table({
+        head: ['Id','Nama Patient', 'Diagnosis']
+      , colWidths: [10, 30, 50]
+    });
+    this.patientsList.forEach(function(val){
+      tabelpasien.push([val.id, val.name, val.diagnosis])
+    })
+    return tabelpasien.toString()
   }
 }
 
@@ -94,6 +130,11 @@ class Employee {
 var rumahSehat = new Hospital(faker.company.companyName(), faker.address.city(), 15, 70);
 rumahSehat.addEmployee(faker.name.findName(), "administrator", "admin", "12345")
 rumahSehat.addEmployee(faker.name.findName(), "dokter", "doctor", "54321")
+rumahSehat.addPatient(faker.name.findName(), "ADHD")
+rumahSehat.addPatient(faker.name.findName(), "Bipolar")
+console.log(rumahSehat.list_patients)
+console.log(rumahSehat.list_karyawan);
+
 var menu = new Interface();
-menu.header()
-menu.login()
+// menu.header()
+// menu.login()
