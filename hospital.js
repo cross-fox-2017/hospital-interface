@@ -18,5 +18,11 @@ class Hospital {
         this.penyakitPasien = ["Sakit Hati", "Sakit Jiwa", "Sakit Jantung"]
         this.userID
     }
-  
+    tampilRS() {
+        console.log(`> Welcome to ${this.namaRS} ${this.lokasiRS}`);
+        console.log(`> ----------------------------`);
+        this.user();
+    }
+
+    
 }
