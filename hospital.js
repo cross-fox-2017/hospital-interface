@@ -52,5 +52,25 @@ class Hospital {
         })
     }
 
-    
+    ob() {
+        rl.question('1. To Show All Office Boy || "EXIT" to Logout =>  ', (inputOb) => {
+            if (inputOb.toUpperCase() == "1") {
+                var jumlahOB = 0;
+                for (var i = 0; i < this.tipeKaryawan.length; i++) {
+                    if (this.tipeKaryawan[i] == "ob") {
+                        console.log(`${jumlahOB+1}. ${this.namaKaryawan[i]}, Jabatan : OB`);
+                        jumlahOB++
+                    }
+                }
+                console.log(`Jumlah OB :  ${jumlahOB}\n`);
+                console.log(`> ----------------------------`);
+                this.ob()
+            } else if (inputOb.toUpperCase() == "EXIT") {
+                console.log("Sistem Logout");
+                rl.close()
+            } else {
+                this.ob()
+            }
+        })
+    }
 }
