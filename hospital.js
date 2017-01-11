@@ -160,4 +160,25 @@ class Hospital {
           }
       })
     }
+
+    removePasien(){
+      console.log(`Input "ID" Pasien To Remove`);
+      console.log(`Input "HOME" Back Home`);
+      console.log(`Input "EXIT" To Logout`);
+      rl.question('Please Input => ',(remove)=>{
+          var input = Number(remove)
+          if(remove.toUpperCase() == "HOME"){
+            this.karyawan()
+          }else if(remove.toUpperCase() == "EXIT"){
+            rl.close()
+          }else if(typeof(input)=="number" && input >=0 && input < this.namaPasien.length){
+              this.namaPasien.splice(remove,1)
+              this.penyakitPasien.splice(remove,1)
+              console.log(`ID: ${remove}, Nama: ${this.namaPasien[remove]} Sakit: ${this.penyakitPasien} => TerHAPUS`);
+              this.removePasien()
+          }else{
+            this.removePasien()
+          }
+      })
+    }
 }
