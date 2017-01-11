@@ -5,10 +5,10 @@ const fs = require('fs')
 const chalk = require('chalk');
 const Table = require('cli-table');
 
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 class Interface{
   constructor(){
@@ -29,6 +29,7 @@ class Interface{
         if (this.cek()){
           this.mainPage()
           this.option()
+          this.choose()
         } else {
           console.log(chalk.bold.red("user atau password anda salah"))
           rl.close()
@@ -55,17 +56,47 @@ class Interface{
   }
   option(){
     if (this.active.position === "dokter"){
-      console.log(`Apa yang ingin anda lakukan?\n Options:\n 1 -- list_patients\n 2 -- view_records <patient_id>\n 3 -- add_record <patient_id> \n 4 -- remove_record <patient_id><record_id>\n`)
+      console.log(`Apa yang ingin anda lakukan?\n Options:\n 1 -- list_patients\n 2 -- view_records <patient_id>\n 3 -- add_record <patient_name><diagnosis> \n 4 -- remove_record <patient_id>\n`)
     } else if(this.active.position === "administrator"){
-      console.log(`Apa yang ingin anda lakukan?\n Options:\n 1 -- list_karyawan\n 2 -- tambah_karyawan\n 3 -- pecat_karyawan\n 4 -- tambah_pasien\n`)
+      console.log(`Apa yang ingin anda lakukan?\n Options:\n 1 -- list_karyawan\n 2 -- tambah_karyawan\n 3 -- pecat_karyawan\n`)
     };
-    this.choose()
   }
   choose(){
     if (this.active.position === "dokter"){
+      rl.question('Apa yang ingin anda lakukan? >', (answer) => {
+        switch (answer) {
+          case 1:
+            rumahSehat.list_patients
+            break;
+          case 2:
+            rumahSehat.view_records(id)
+            break;
+          case 3:
+            rumahSehat.addPatient(nama, diagnosis)
+            break;
+          case 4:
+            rumahSehat.removePatient(id)
+            break;
+          default:
 
+        }
+      });
     } else if(this.active.position === "administrator"){
+      rl.question('Apa yang ingin anda lakukan? >', (answer) => {
+        switch (answer) {
+          case 1:
+            rumahSehat.list_karyawan
+            break;
+          case 2:
+            rumahSehat.addEmployee(name, position, username, password)
+            break;
+          case 3:
+            rumahSehat.removeEmployee(name)
+            break;
+          default:
 
+        }
+      });
     };
   }
 }
@@ -97,14 +128,30 @@ class Hospital {
     return this.patientsList
   }
   view_records(patient_id){
-
+    for (let i = 0; i < this.patientsList.length; i++){
+      if (this.patientsList[i].id == id){
+        return this.patientsList[i]
+      }
+    }
+    return `Id "${id}" tidak ditemukan dalam daftar Pasien`
   }
-  addPatientRecord(patient_id){
-
-  }
-  removePatientRecord(patient_id, record_id){
-
-  }
+  // addPatientRecord(patient_id){
+  //   for (let i = 0; i < this.patientsList.length; i++){
+  //     if (this.patientsList[i].id == id){
+  //       this.patientsList[i].record.push(new Record())
+  //       return this.patientsList[i]
+  //     }
+  //   }
+  //   return `Id "${id}" tidak ditemukan dalam daftar Pasien`
+  // }
+  // removePatientRecord(patient_id, record_id){
+  //   for (let i = 0; i < this.patientsList.length; i++){
+  //     if (this.patientsList[i].id == id){
+  //       return this.patientsList
+  //     }
+  //   }
+  //   return `Id "${id}" tidak ditemukan dalam daftar Pasien`
+  // }
   removePatient(id){
     for (let i = 0; i < this.patientsList.length; i++){
       if (this.patientsList[i].id == id){
@@ -131,7 +178,7 @@ class Hospital {
       , colWidths: [10, 30, 50]
     });
     this.patientsList.forEach(function(val){
-      tabelpasien.push([val.id, val.name, val.record])
+      tabelpasien.push([val.id, val.name, val.diagnosis])
     })
     return tabelpasien.toString()
   }
@@ -141,7 +188,8 @@ class Patient {
   constructor(id, name, diagnosis) {
     this.id = id;
     this.name = name;
-    this.record = this.records(diagnosis);
+    // this.record = this.records(diagnosis);
+    this.diagnosis = diagnosis;
   }
   records(diagnosis){
     let rec = [];
@@ -149,12 +197,13 @@ class Patient {
     return this.record = rec;
   }
 }
-class Record{
-  constructor(id, diagnosis){
-    this.id = id
-    this.diagnosis = diagnosis
-  }
-}
+// class Record{
+//   constructor(id, diagnosis){
+//     this.id = id
+//     this.diagnosis = diagnosis
+//     this.createAt = new Date()
+//   }
+// }
 
 class Employee {
   constructor(name, position, username, password) {
@@ -170,9 +219,9 @@ rumahSehat.addEmployee(faker.name.findName(), "administrator", "admin", "12345")
 rumahSehat.addEmployee(faker.name.findName(), "dokter", "doctor", "54321");
 rumahSehat.addPatient(faker.name.findName(), "ADHD");
 rumahSehat.addPatient(faker.name.findName(), "Bipolar");
-console.log(rumahSehat.list_patients);
+rumahSehat.list_patients;
 rumahSehat.list_karyawan;
 
 var menu = new Interface();
-// menu.header()
-// menu.login()
+menu.header()
+menu.login()
