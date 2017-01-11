@@ -73,4 +73,19 @@ class Hospital {
             }
         })
     }
+
+    karyawan() {
+        console.log(`> ----------------------------`);
+        console.log(`> What would you like to do?`);
+        console.log('> Options:');
+        console.log(`1. To Show All Karyawan`)
+        console.log(`2. To Show All pasien`);
+        console.log(`3. To Show All Office Boy`);
+        console.log(`4. To Show All Record Pasien`);
+        console.log(`5. To Add Pasien`);
+        console.log(`6  To Remove Pasien`);
+        console.log(`Ketik "EXIT" : To Logout`);
+        console.log(`> ----------------------------`);
+        this.proses()
+    }
 }
