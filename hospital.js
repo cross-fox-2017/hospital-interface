@@ -88,4 +88,57 @@ class Hospital {
         console.log(`> ----------------------------`);
         this.proses()
     }
+
+    proses() {
+        rl.question('Please Input => ', (inputOption) => {
+            if (inputOption.toUpperCase() == "1") {
+                var jumlahKaryawan = 0;
+                for (var i = 0; i < this.tipeKaryawan.length; i++) {
+                    console.log(`${jumlahKaryawan+1}. ${this.namaKaryawan[i]}, Jabatan : ${this.tipeKaryawan[i]}`);
+                    jumlahKaryawan++
+                }
+                console.log(`Jumlah Karyawan :  ${jumlahKaryawan}`);
+                this.karyawan()
+            } else if (inputOption.toUpperCase() == "2") {
+              var jumlahPasien = 0;
+              for (var i = 0; i < this.namaPasien.length; i++) {
+                  console.log(`${jumlahPasien+1}. ${this.namaPasien[i]}, Sakit : ${this.penyakitPasien[i]}`);
+                  jumlahPasien++
+              }
+              console.log(`Jumlah Pasien :  ${jumlahPasien}`);
+              this.karyawan()
+            } else if (inputOption.toUpperCase() == "3") {
+                var jumlahOB = 0;
+                for (var i = 0; i < this.tipeKaryawan.length; i++) {
+                    if (this.tipeKaryawan[i] == "ob") {
+                        console.log(`${jumlahOB+1}. ${this.namaKaryawan[i]}, Jabatan : OB`);
+                        jumlahOB++
+                    }
+                }
+                console.log(`Jumlah OB :  ${jumlahOB}`);
+                this.karyawan()
+            } else if (inputOption.toUpperCase() == "4") {
+                //Menampilkan nama pasien, sakit pasien, id pasien (sama dengan pasien bedannya ada idnya)
+                var jumlahPasien = 0;
+                for (var i = 0; i < this.namaPasien.length; i++) {
+                    console.log(`ID Pasien : ${i}\nNama ${this.namaPasien[i]}\nSakit : ${this.penyakitPasien[i]}`);
+                    jumlahPasien++
+                }
+                console.log(`Jumlah Pasien :  ${jumlahPasien}`);
+                this.karyawan()
+            } else if (inputOption.toUpperCase() == "5") {
+                //menambah pasien
+                this.addPasien()
+            } else if (inputOption.toUpperCase() == "6") {
+                //menambah menghapus pasien
+                this.removePasien()
+            } else if (inputOption.toUpperCase() == "EXIT") {
+                rl.close()
+            } else {
+                this.karyawan()
+            }
+        })
+    }
+
+    
 }
