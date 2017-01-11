@@ -24,5 +24,14 @@ class Hospital {
         this.user();
     }
 
-    
+    user() {
+        rl.question('> Please enter your username: ', (user) => {
+            if (this.userKaryawan.indexOf(user) != -1) {
+                this.userID = this.userKaryawan.indexOf(user)
+                this.password()
+            } else {
+                this.user()
+            }
+        })
+    }
 }
