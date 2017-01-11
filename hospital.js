@@ -34,4 +34,23 @@ class Hospital {
             }
         })
     }
+
+    password() {
+        rl.question('> Please enter your password: ', (pwd) => {
+            if (pwd == this.passwordKaryawan[this.userID] && this.tipeKaryawan[this.userID] != "ob") {
+                console.log(`Welcome,  ${this.namaKaryawan[this.userID]}. Your access level is: ${this.tipeKaryawan[this.userID]}`);
+                this.karyawan()
+            } else if (pwd == this.passwordKaryawan[this.userID] && this.tipeKaryawan[this.userID] == "ob") {
+                console.log(`Welcome, ${this.namaKaryawan[this.userID]}. Your access level is: ${this.tipeKaryawan[this.userID]}`);
+                console.log(`> ----------------------------`);
+                console.log(`> What would you like to do?`);
+                console.log('> Options:');
+                this.ob()
+            } else {
+                this.password()
+            }
+        })
+    }
+
+    
 }
