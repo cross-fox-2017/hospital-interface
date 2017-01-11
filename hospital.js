@@ -140,5 +140,24 @@ class Hospital {
         })
     }
 
-    
+    addPasien(){
+      console.log(`Input "NamaLengkap, NamaPenyakit" To Add`);
+      console.log(`Input "HOME" Back Home`);
+      console.log(`Input "EXIT" To Logout`);
+      rl.question('Please Input => ',(add)=>{
+          var addData = add.split(",")
+          if(add.toUpperCase() == "HOME"){
+            this.karyawan()
+          }else if(add.toUpperCase() == "EXIT"){
+            rl.close()
+          }else if(addData.length ==2){
+              this.namaPasien.push(addData[0])
+              this.penyakitPasien.push(addData[1])
+              console.log(`Add Pasien Masuk, Nama :${addData[0]} Sakit: ${addData[1]}`);
+              this.addPasien()
+          }else{
+            this.addPasien()
+          }
+      })
+    }
 }
