@@ -84,7 +84,13 @@ class Hospital {
     return this.employeesList
   }
   removeEmployee(name){
-
+    for (let i = 0; i < this.employeesList.length; i++){
+      if (this.employeesList[i].name == name){
+        this.employeesList.splice(i, 1);
+        return this.employeesList;
+      }
+    }
+    return `Nama "${name}" tidak ditemukan dalam daftar karyawan`;
   }
   addPatient(name, diagnosis){
     this.patientsList.push(new Patient(this.patientsList[this.patientsList.length-1].id+1, name, diagnosis))
@@ -100,7 +106,13 @@ class Hospital {
 
   }
   removePatient(id){
-
+    for (let i = 0; i < this.patientsList.length; i++){
+      if (this.patientsList[i].id == id){
+        this.patientsList.splice(i, 1)
+        return this.patientsList
+      }
+    }
+    return `Id "${id}" tidak ditemukan dalam daftar Pasien`
   }
   get list_karyawan(){
     let tabelKaryawan = new Table({
@@ -119,7 +131,7 @@ class Hospital {
       , colWidths: [10, 30, 50]
     });
     this.patientsList.forEach(function(val){
-      tabelpasien.push([val.id, val.name, val.diagnosis])
+      tabelpasien.push([val.id, val.name, val.record])
     })
     return tabelpasien.toString()
   }
@@ -127,8 +139,19 @@ class Hospital {
 
 class Patient {
   constructor(id, name, diagnosis) {
+    this.id = id;
+    this.name = name;
+    this.record = this.records(diagnosis);
+  }
+  records(diagnosis){
+    let rec = [];
+    rec.push(diagnosis);
+    return this.record = rec;
+  }
+}
+class Record{
+  constructor(id, diagnosis){
     this.id = id
-    this.name = name
     this.diagnosis = diagnosis
   }
 }
@@ -143,12 +166,12 @@ class Employee {
 }
 
 var rumahSehat = new Hospital(faker.company.companyName(), faker.address.city(), 15, 70);
-rumahSehat.addEmployee(faker.name.findName(), "administrator", "admin", "12345")
-rumahSehat.addEmployee(faker.name.findName(), "dokter", "doctor", "54321")
-rumahSehat.addPatient(faker.name.findName(), "ADHD")
-rumahSehat.addPatient(faker.name.findName(), "Bipolar")
-console.log(rumahSehat.list_patients)
-console.log(rumahSehat.list_karyawan);
+rumahSehat.addEmployee(faker.name.findName(), "administrator", "admin", "12345");
+rumahSehat.addEmployee(faker.name.findName(), "dokter", "doctor", "54321");
+rumahSehat.addPatient(faker.name.findName(), "ADHD");
+rumahSehat.addPatient(faker.name.findName(), "Bipolar");
+console.log(rumahSehat.list_patients);
+rumahSehat.list_karyawan;
 
 var menu = new Interface();
 // menu.header()
