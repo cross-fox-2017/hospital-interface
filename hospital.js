@@ -20,12 +20,13 @@ class Interface{
     console.log(`Welcome to ${chalk.bold.blue(rumahSehat.name)} ${chalk.bold.blue(rumahSehat.location)} Hospital`);
     console.log(chalk.bold.green("-------------------------------------------"));
   }
+  
   login(){
     rl.prompt()
     rl.question('Please enter your username: ', (username) => {
       rl.question('Please enter your password: ', (password) => {
-        this.user.push(`${username}`);
-        this.pass.push(`${password}`);
+        this.user.shift(`${username}`);
+        this.pass.shift(`${password}`);
         if (this.cek()){
           this.mainPage()
           this.option()
@@ -63,7 +64,6 @@ class Interface{
   }
   choose(){
     if (this.active.position === "dokter"){
-      rl.question('Apa yang ingin anda lakukan? >', (answer) => {
         switch (answer) {
           case 1:
             rumahSehat.list_patients
@@ -82,7 +82,6 @@ class Interface{
         }
       });
     } else if(this.active.position === "administrator"){
-      rl.question('Apa yang ingin anda lakukan? >', (answer) => {
         switch (answer) {
           case 1:
             rumahSehat.list_karyawan
