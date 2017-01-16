@@ -39,4 +39,19 @@ export class View{
   static print(item){
     console.log(`\n${item}\n`);
   }
+  static removed(item){
+    console.log(`${JSON.stringify(item)} Has Been Deleted \n`);
+  }
+  static newusername(){
+    return `Input New Username : `
+  }
+  static position(){
+    return `Input Position (administrator/dokter) : `
+  }
+  static newpassword(){
+    return `Input New Password : `
+  }
+  static added(item){
+    console.log(`${JSON.stringify(item)} Has Been Added \n`);
+  }
 }

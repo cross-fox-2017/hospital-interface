@@ -12,7 +12,7 @@ export class Hospital {
   }
   addEmployee(name, position, username, password){
     this.employeesList.push(new Employee(name, position, username, password))
-    return this.employeesList
+    return this.employeesList[this.employeesList.length-1]
   }
   removeEmployee(name){
     for (let i = 0; i < this.employeesList.length; i++){

@@ -5,6 +5,7 @@ import {View} from './view.js';
 const readline = require('readline');
 const faker = require('faker');
 
+//dummydata
 var rumahSehat = new Hospital(faker.company.companyName(), faker.address.city(), 15, 70);
 rumahSehat.addEmployee(faker.name.findName(), "administrator", "admin", "12345");
 rumahSehat.addEmployee(faker.name.findName(), "dokter", "doctor", "54321");
@@ -20,6 +21,7 @@ class Controller{
     this.question = 'username'
     this.hospital = rumahSehat
     this.exit = false
+    this.cmd = []
   }
   cek(){
     for (var i = 0; i <this.hospital.employeesList.length; i++){
@@ -37,6 +39,7 @@ class Controller{
       switch (input) {
         case '1':
           View.print(this.hospital.list_patients);
+          View.option(this.active.position)
           break;
         case '2':
           this.hospital.view_records(id)
@@ -54,18 +57,20 @@ class Controller{
       switch (input) {
         case '1':
           View.print(this.hospital.list_karyawan);
+          View.option(this.active.position)
           break;
         case '2':
-          this.hospital.addEmployee(name, position, username, password)
+          this.rl.setPrompt('input nama : ')
+          this.question = 'addEmployee'
           break;
         case '3':
-          this.hospital.removeEmployee(name)
+          this.rl.setPrompt('input nama : ')
+          this.question = 'removeEmployee'
           break;
         default:
           this.exit = true;
       }
     };
-    View.option(this.active.position)
   }
   running(){
     View.header(this.hospital.name, this.hospital.location)
@@ -90,6 +95,28 @@ class Controller{
         }
       } else if (this.question == 'choice'){
         this.choose(this.active.position, input)
+      } else if (this.question == 'removeEmployee'){
+        View.removed(this.hospital.removeEmployee(input))
+        this.rl.setPrompt(View.askInput())
+        View.option(this.active.position)
+        this.question = 'choice'
+      } else if (this.question == 'addEmployee'){
+        if (this.cmd.length == 0){
+          this.rl.setPrompt(View.position())
+          this.cmd.push(input)
+        } else if (this.cmd.length == 1){
+          this.rl.setPrompt(View.newusername())
+          this.cmd.push(input)
+        } else if (this.cmd.length == 2) {
+          this.rl.setPrompt(View.newpassword())
+          this.cmd.push(input)
+        } else if (this.cmd.length == 3){
+          this.cmd.push(input)
+          View.added(this.hospital.addEmployee(this.cmd[0], this.cmd[1], this.cmd[2], this.cmd[3]))
+          View.option(this.active.position)
+          this.rl.setPrompt(View.askInput())
+          this.question = 'choice'
+        }
       }
     if (this.exit){
       this.rl.close()
@@ -104,5 +131,3 @@ class Controller{
 
 var control = new Controller()
 control.running()
-rumahSehat.list_patients;
-rumahSehat.list_karyawan;
