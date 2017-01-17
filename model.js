@@ -24,7 +24,7 @@ export class Hospital {
   }
   addPatient(name, diagnosis){
     this.patientsList.push(new Patient(this.patientsList[this.patientsList.length-1].id+1, name, diagnosis))
-    return this.patientsList
+    return this.patientsList[this.patientsList.length-1]
   }
   view_records(patient_id){
     for (let i = 0; i < this.patientsList.length; i++){

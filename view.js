@@ -34,13 +34,13 @@ export class View{
     console.log(`\n${chalk.bold.red('Username or Password salah')} \nSilahkan Ulangi\n`);
   }
   static exit(){
-    console.log(`\nHave a good day`);
+    console.log(`\n${chalk.bold.cyan('Have a good day')}`);
   }
   static print(item){
     console.log(`\n${item}\n`);
   }
   static removed(item){
-    console.log(`${JSON.stringify(item)} Has Been Deleted \n`);
+    console.log(`${chalk.bold.underline.black.bgWhite(item[0].name)} ${chalk.bold.red('Has Been Deleted')} \n`);
   }
   static fullname(){
     return 'input nama : '
@@ -64,7 +64,7 @@ export class View{
     return `Input New Password : `
   }
   static added(item){
-    console.log(`${JSON.stringify(item)} Has Been Added \n`);
+    console.log(`${chalk.bold.underline.black.bgWhite(item.name)} ${chalk.bold.green('Has Been Added')} \n`);
   }
   static view(item){
     console.log(JSON.stringify(item))
