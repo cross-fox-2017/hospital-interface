@@ -29,7 +29,7 @@ export class Hospital {
   }
   view_records(patient_id){
     for (let i = 0; i < this.patientsList.length; i++){
-      if (this.patientsList[i].id == id){
+      if (this.patientsList[i].id == patient_id){
         return this.patientsList[i]
       }
     }
@@ -38,8 +38,7 @@ export class Hospital {
   removePatient(id){
     for (let i = 0; i < this.patientsList.length; i++){
       if (this.patientsList[i].id == id){
-        this.patientsList.splice(i, 1)
-        return this.patientsList
+        return this.patientsList.splice(i, 1)
       }
     }
     return `Id "${id}" tidak ditemukan dalam daftar Pasien`
@@ -58,7 +57,7 @@ export class Hospital {
   get list_patients(){
     let tabelpasien = new Table({
         head: ['Id','Nama Patient', 'Diagnosis']
-      , colWidths: [10, 30, 50]
+      , colWidths: [8, 25, 40]
     });
     this.patientsList.forEach(function(val){
       tabelpasien.push([val.id, val.name, val.diagnosis])

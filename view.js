@@ -42,6 +42,18 @@ export class View{
   static removed(item){
     console.log(`${JSON.stringify(item)} Has Been Deleted \n`);
   }
+  static fullname(){
+    return 'input nama : '
+  }
+  static idpatient(){
+    return 'Input Patient ID : '
+  }
+  static diagnosis(){
+    return 'Input Patient Diagnosis : '
+  }
+  static newpatientname(){
+    return 'Masukkan Nama Pasien Baru : '
+  }
   static newusername(){
     return `Input New Username : `
   }
@@ -53,5 +65,8 @@ export class View{
   }
   static added(item){
     console.log(`${JSON.stringify(item)} Has Been Added \n`);
+  }
+  static view(item){
+    console.log(JSON.stringify(item))
   }
 }

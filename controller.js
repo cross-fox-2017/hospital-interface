@@ -42,13 +42,16 @@ class Controller{
           View.option(this.active.position)
           break;
         case '2':
-          this.hospital.view_records(id)
+          this.rl.setPrompt(View.idpatient())
+          this.question = 'view_records'
           break;
         case '3':
-          this.hospital.addPatient(nama, diagnosis)
+          this.rl.setPrompt(View.newpatientname())
+          this.question = 'addPatient'
           break;
         case '4':
-          this.hospital.removePatient(id)
+          this.rl.setPrompt(View.idpatient())
+          this.question = 'removePatient'
           break;
         default:
           this.exit = true;
@@ -60,11 +63,11 @@ class Controller{
           View.option(this.active.position)
           break;
         case '2':
-          this.rl.setPrompt('input nama : ')
+          this.rl.setPrompt(View.fullname())
           this.question = 'addEmployee'
           break;
         case '3':
-          this.rl.setPrompt('input nama : ')
+          this.rl.setPrompt(View.fullname())
           this.question = 'removeEmployee'
           break;
         default:
@@ -113,9 +116,30 @@ class Controller{
         } else if (this.cmd.length == 3){
           this.cmd.push(input)
           View.added(this.hospital.addEmployee(this.cmd[0], this.cmd[1], this.cmd[2], this.cmd[3]))
-          View.option(this.active.position)
           this.rl.setPrompt(View.askInput())
+          View.option(this.active.position)
           this.question = 'choice'
+          this.cmd = []
+        }
+      } else if (this.question == 'view_records'){
+        View.view(this.hospital.view_records(input))
+        View.option(this.active.position)
+        this.rl.setPrompt(View.askInput())
+        this.question = 'choice'
+      } else if (this.question == 'removePatient'){
+        View.removed(this.hospital.removePatient(input))
+        View.option(this.active.position)
+        this.rl.setPrompt(View.askInput())
+        this.question = 'choice'
+      } else if (this.question ==  'addPatient'){
+        this.cmd.push(input)
+        if (this.cmd.length == 1){
+          this.rl.setPrompt(View.diagnosis())
+        } else if (this.cmd.length == 2){
+          this.hospital.addPatient(this.cmd[0], this.cmd[1])
+          View.option(this.active.position)
+          this.question = 'choice'
+          this.cmd = []
         }
       }
     if (this.exit){
