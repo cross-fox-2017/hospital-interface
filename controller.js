@@ -12,7 +12,7 @@ rumahSehat.addEmployee(faker.name.findName(), "dokter", "doctor", "54321");
 rumahSehat.addPatient(faker.name.findName(), "ADHD");
 rumahSehat.addPatient(faker.name.findName(), "Bipolar");
 
-class Controller{
+export class Controller{
   constructor(){
     this.rl = readline.createInterface({input: process.stdin,output: process.stdout});
     this.user = []
@@ -75,72 +75,77 @@ class Controller{
       }
     };
   }
+  toCommandCenter(){
+    View.option(this.active.position)
+    this.rl.setPrompt(View.askInput())
+    this.question = 'choice'
+    this.cmd = []
+  }
+  userCek(input){
+    this.user.unshift(input);
+    this.rl.setPrompt(View.password())
+    this.question = 'password'
+  }
+  userPassCek(input){
+    this.pass.unshift(input);
+    if (this.cek()){
+      View.mainPage(this.active.name, this.active.position)
+      this.toCommandCenter()
+    } else {
+      View.wrong()
+      this.rl.setPrompt(View.username())
+      this.question = 'username'
+    }
+  }
+  addEmployee(input){
+    if (this.cmd.length == 0){
+      this.rl.setPrompt(View.position())
+      this.cmd.push(input)
+    } else if (this.cmd.length == 1){
+      this.rl.setPrompt(View.newusername())
+      this.cmd.push(input)
+    } else if (this.cmd.length == 2) {
+      this.rl.setPrompt(View.newpassword())
+      this.cmd.push(input)
+    } else if (this.cmd.length == 3){
+      this.cmd.push(input);
+      View.added(this.hospital.addEmployee(this.cmd[0], this.cmd[1], this.cmd[2], this.cmd[3]))
+      this.toCommandCenter();
+    }
+  }
+  addPatient(input){
+    this.cmd.push(input)
+    if (this.cmd.length == 1){
+      this.rl.setPrompt(View.diagnosis())
+    } else if (this.cmd.length == 2){
+      View.added(this.hospital.addPatient(this.cmd[0], this.cmd[1]))
+      this.toCommandCenter()
+    }
+  }
   running(){
     View.header(this.hospital.name, this.hospital.location)
     this.rl.setPrompt(View.username())
     this.rl.prompt()
     this.rl.on('line', (input) => {
       if (this.question == 'username'){
-        this.user.unshift(input);
-        this.rl.setPrompt(View.password())
-        this.question = 'password'
+        this.userCek(input)
       } else if (this.question == 'password'){
-        this.pass.unshift(input);
-        if (this.cek()){
-          View.mainPage(this.active.name, this.active.position)
-          View.option(this.active.position)
-          this.rl.setPrompt(View.askInput())
-          this.question = 'choice'
-        } else {
-          View.wrong()
-          this.rl.setPrompt(View.username())
-          this.question = 'username'
-        }
+        this.userPassCek(input)
       } else if (this.question == 'choice'){
         this.choose(this.active.position, input)
       } else if (this.question == 'removeEmployee'){
         View.removed(this.hospital.removeEmployee(input))
-        this.rl.setPrompt(View.askInput())
-        View.option(this.active.position)
-        this.question = 'choice'
+        this.toCommandCenter();
       } else if (this.question == 'addEmployee'){
-        if (this.cmd.length == 0){
-          this.rl.setPrompt(View.position())
-          this.cmd.push(input)
-        } else if (this.cmd.length == 1){
-          this.rl.setPrompt(View.newusername())
-          this.cmd.push(input)
-        } else if (this.cmd.length == 2) {
-          this.rl.setPrompt(View.newpassword())
-          this.cmd.push(input)
-        } else if (this.cmd.length == 3){
-          this.cmd.push(input)
-          View.added(this.hospital.addEmployee(this.cmd[0], this.cmd[1], this.cmd[2], this.cmd[3]))
-          this.rl.setPrompt(View.askInput())
-          View.option(this.active.position)
-          this.question = 'choice'
-          this.cmd = []
-        }
+        this.addEmployee(input)
       } else if (this.question == 'view_records'){
         View.view(this.hospital.view_records(input))
-        View.option(this.active.position)
-        this.rl.setPrompt(View.askInput())
-        this.question = 'choice'
+        this.toCommandCenter();
       } else if (this.question == 'removePatient'){
         View.removed(this.hospital.removePatient(input))
-        View.option(this.active.position)
-        this.rl.setPrompt(View.askInput())
-        this.question = 'choice'
+        this.toCommandCenter();
       } else if (this.question ==  'addPatient'){
-        this.cmd.push(input)
-        if (this.cmd.length == 1){
-          this.rl.setPrompt(View.diagnosis())
-        } else if (this.cmd.length == 2){
-          this.hospital.addPatient(this.cmd[0], this.cmd[1])
-          View.option(this.active.position)
-          this.question = 'choice'
-          this.cmd = []
-        }
+        this.addPatient(input);
       }
     if (this.exit){
       this.rl.close()
@@ -152,6 +157,3 @@ class Controller{
     })
   }
 }
-
-var control = new Controller()
-control.running()

@@ -17,8 +17,7 @@ export class Hospital {
   removeEmployee(name){
     for (let i = 0; i < this.employeesList.length; i++){
       if (this.employeesList[i].name == name){
-        this.employeesList.splice(i, 1);
-        return this.employeesList;
+        return this.employeesList.splice(i, 1);
       }
     }
     return `Nama "${name}" tidak ditemukan dalam daftar karyawan`;
@@ -79,13 +78,6 @@ class Patient {
     return this.record = rec;
   }
 }
-// class Record{
-//   constructor(id, diagnosis){
-//     this.id = id
-//     this.diagnosis = diagnosis
-//     this.createAt = new Date()
-//   }
-// }
 
 class Employee {
   constructor(name, position, username, password) {
