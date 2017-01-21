@@ -11,7 +11,7 @@ class Hospital {
     let x='nama   | posisi  |  username  |\n================================\n'
     let r= this.employees
     for(let i=0;i<r.length;i++){
-      x += `${r[i].nama}   ${r[i].posisi}  ${r[i].username}\n`
+      x += `${r[i].name}     ${r[i].position}       ${r[i].username}\n`
     }
     return x
   }
@@ -24,6 +24,12 @@ class Hospital {
     for(let i=0;i<r.length;i++){
       x += `${r[i].id}   ${r[i].name}     ${r[i].diagnosis}\n`
     }
+    return x
+  }
+  getPatId(id){
+    let x='id | nama | diagnosis\n=====================\n'
+    let r= this.patients
+      x += `${r[id].id}   ${r[id].name}     ${r[id].diagnosis}\n`
     return x
   }
   setPatients(x){
@@ -63,18 +69,20 @@ class Employee {
 
 }
 
-let netta = new Employee('Fenetta','Doctor','netta',"1234")
+let netta = new Employee('Fenetta','Doctor','netta',"1234") //ubah Doctor ke Admin kalo mau tes fungsi admin
 
 let mistic = new Hospital('mistic','bandung')
 const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
-  prompt: 'Please input your username '
+  prompt: 'WELCOME TO MISTIC HOSPITAL\n=========================\nPlease input your username '
 });
 
 let x=[]
 rl.prompt();
+let pasien=[]
+let karyawan=[]
 let y = 0
 
 rl.on('line', (ans) => {
@@ -89,7 +97,7 @@ rl.on('line', (ans) => {
   else if(x[0]===netta.username && ans===netta.password && y===1){
     y = 2
     if(netta.position==='Doctor'){
-      rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Exit\ninput: ` )
+      rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Check Record by Id\n5.Exit\ninput: ` )
     }
     else if(netta.position==='Admin'){
       rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check employees\n2.Add employee\n3.Remove employee\n4.Exit\ninput: ` )
@@ -102,28 +110,47 @@ rl.on('line', (ans) => {
       console.log(mistic.getPatients())
     }
     else if(ans === "2" && y==2){
-      y=3
-      rl.setPrompt(`\nPlease input patient name and diagnosis (format : name,diagnosis): ` )
+      y=5
+      rl.setPrompt(`\nPlease input patient name and diagnosis (press enter)` )
 
     }
     else if(ans === "3" && y==2){
       y=4
       rl.setPrompt(`\nPlease input patient id to delete: \n` )
     }
-    else if(ans ==="4" && y==2){
+    else if(ans === "4" && y==2){
+      y=7
+      rl.setPrompt(`\nplease input patient id: \n` )
+    }
+    else if(ans ==="5" && y==2){
       rl.close()
     }
     else{
-      if(y===3){
+      if(y===5){
+        y=6
+        rl.setPrompt(`Please input patient name: ` )
+      }
+      else if(y===6){
+        y=3
+        pasien.push(ans)
+        rl.setPrompt(`Please input patient diagnose: ` )
+      }
+      else if(y===3){
         y=2
-        rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Exit\ninput: ` )
-        let pasien = ans.split(',')
+        pasien.push(ans)
+        rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Check Record by Id\n5.Exit\ninput: ` )
         mistic.setPatients(new Patient(mistic.patients.length+1,pasien[0],pasien[1]))
+        pasien.splice(0,2)
       }
       else if(y===4){
-        rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Exit\ninput: ` )
+        rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Check Record by Id\n5.Exit\ninput: ` )
         y=2
         mistic.deletePatient(ans)
+      }
+      else if(y===7){
+        console.log(mistic.getPatId(ans-1))
+        rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check Patient Status\n2.Add Patient\n3.Remove patient\n4.Check Record by Id\n5.Exit\ninput: ` )
+        y=2
       }
     }
     break;
@@ -133,8 +160,8 @@ rl.on('line', (ans) => {
       console.log(mistic.getEmployees())
     }
     else if(ans === "2" && y==2){
-      y=3
-      rl.setPrompt(`\nPlease input patient name, position, username, password(format : name,position,username,password): ` )
+      y=5
+      rl.setPrompt(`\nPlease input patient name, position, username, password(press enter) ` )
 
     }
     else if(ans === "3" && y==2){
@@ -145,11 +172,32 @@ rl.on('line', (ans) => {
       rl.close()
     }
     else{
-      if(y===3){
+      if(y===5){
+        y=6
+        rl.setPrompt(`Please input employee name: ` )
+      }
+      else if(y===6){
+        y=7
+        karyawan.push(ans)
+        rl.setPrompt(`Please input employee position: ` )
+      }
+      else if(y===7){
+        y=8
+        karyawan.push(ans)
+        rl.setPrompt(`Please input employee username: ` )
+      }
+      else if(y===8){
+        y=3
+        karyawan.push(ans)
+        rl.setPrompt(`Please input employee password: ` )
+      }
+      else if(y===3){
         y=2
+        karyawan.push(ans)
         rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check employees\n2.Add employee\n3.Remove employee\n4.Exit\ninput: ` )
-        let employ = ans.split(',')
-        mistic.setEmployees(new Employee(employ[0],employ[1],employ[2],employ[3]))
+        console.log(karyawan);
+        mistic.setEmployees(new Employee(karyawan[0],karyawan[1],karyawan[2],karyawan[3]))
+        karyawan.splice(0,4)
       }
       else if(y===4){
         rl.setPrompt(`\nhello fenetta, what youre gonna do? \n1.Check employees\n2.Add employee\n3.Remove employee\n4.Exit\ninput: ` )
