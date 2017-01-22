@@ -20,29 +20,29 @@ class Hospital {
 
   header(){
       console.log("\n\n================================================");
-      console.log(`Welcome to ${this.name} Hospital ${this.location}`);
+      console.log(`Selamat Datang di Rumah Sakit, ${this.name}, ${this.location}`);
       console.log("================================================");
       this.login()
   }
 
   login(){
-      rl.question('\n\nPlease enter your username (kabayan, iteung, agus, cepot, jana)\nUsername : ', (answer) => {
+      rl.question('\n\nMasukkan username anda(kabayan, iteung, agus, cepot, jana)\nUsername : ', (answer) => {
           if (this.username.indexOf(answer) !== -1 ) {
               this.id = this.username.indexOf(answer)
               this.password();
           }else {
-            console.log('\n\nInvalid username. Try again!\n');
+            console.log('\n\nUsernama yang anda masukkan salah!\n');
             this.login();
           }
       });
   }
 
   password(){
-      rl.question('\n\nPlease enter your Password (hint : 1,2,3,4,5)\nPassword : ', (answer) => {
+      rl.question('\n\nMasukan password andas (hint : 1,2,3,4,5)\nPassword : ', (answer) => {
           if (answer == this.pass[this.id]) {
             this.welcome()
           }else {
-            console.log('\n\nInvalid password. Try again!\n');
+            console.log('\n\nPassword yang anda masukkan salah!\n');
             this.password();
           }
       });
@@ -50,40 +50,40 @@ class Hospital {
 
   welcome(){
       console.log("\n\n================================================");
-      console.log(`Welcome ${this.employees[this.id]}. Your access level is : ${this.position[this.id]}`)
+      console.log(`Selamat datang ${this.employees[this.id]}. Akses kamu adalah: ${this.position[this.id]}`)
 
       this.home()
   }
 
   home(){
     console.log("\n================================================");
-    console.log('What would you like to do?');
+    console.log('Silahkan Pilih Opsi di Bawah ini.');
     console.log('Option : ');
-    console.log('-- list_patients');
-    console.log('-- view_records');
-    console.log('-- add_records');
-    console.log('-- remove_records');
+    console.log('-- daftar-pasien');
+    console.log('-- detail-pasien');
+    console.log('-- tambah-pasien');
+    console.log('-- hapus-pasien');
     this.option()
   }
 
   list_patients(){
       if (this.patients.length == 0) {
-          console.log("\nThere is no patient(s) in record");
+          console.log("\nTidak ada pasien");
           this.home()
       }
       else if (this.id == 4){
-          console.log("\n**You can only access your own medical report**\n");
+          console.log("\n**Anda hanya bisa melihat riwayat milik anda**\n");
           this.view_records()
       }
       else if (this.id == 3) {
-          console.log("\nYou can only access id and patient's name");
-          console.log('\n=======================\nPatients List : \n======================\n\nID     Name');
+          console.log("\nAnda hanya dapat mengakses id dan nama Pasien");
+          console.log('\n=======================\nDaftar Pasien : \n======================\n\nID     Name');
           for (var i = 0; i < this.patients.length; i++) {
               console.log(`${this.patients[i].id}      ${this.patients[i].name}`);
           }
           this.home()
       }else {
-          console.log('\n\n=======================\nPatients List : \n======================\n\nID     Name     Diagnose');
+          console.log('\n\n=======================\nDaftar Pasien : \n======================\n\nID     Name     Diagnose');
           for (var i = 0; i < this.patients.length; i++) {
               console.log(`${this.patients[i].id}      ${this.patients[i].name}   ${this.patients[i].diagnose}`);
           }
@@ -93,7 +93,7 @@ class Hospital {
   }
 
   view_records(){
-   rl.question('\nEnter patient ID: (or enter exit to back to home page)', (answer) => {
+   rl.question('\nMasukan ID Pasien: (atau masukan exit untuk keluar)', (answer) => {
      if (answer > 0 && answer <= this.patients.length) {
        if (this.id == 3) {
          console.log(`ID : ${this.patients[answer-1].id}\nName : ${this.patients[answer-1].name}\n`);
@@ -107,7 +107,7 @@ class Hospital {
      else if (answer == 'exit') {
         this.home()
      }else {
-       console.log('Record not found. Please make sure if your ID has been registered');
+       console.log('Data tidak ditemukan');
        this.view_records()
      }
    });
@@ -115,13 +115,13 @@ class Hospital {
 
  add_records(){
     if (this.id == 3 || this.id == 4) {
-        console.log('Access denied! Only Doctors, Admins, and Receptionists can add new patient');
+        console.log('Akses ditolak! Hanya Admin, Dokter dan Resepsionis yang bisa menambahkan pasien');
         this.home()
     }else {
-      rl.question('\nEnter patient\'s name & diagnose (ex: john,diarrhea) : ', (answer) => {
+      rl.question('\nMasukan nama pasien dan diagnosa (contoh: john,diare) : ', (answer) => {
         let input = answer.split(',');
         this.patients.push({id: this.patients.length + 1, name: input[0], diagnose: input[1]})
-        console.log('\nNew patient has been recorded')
+        console.log('\nPasien berhasil ditambahkan')
         this.home()
       });
     }
@@ -129,38 +129,38 @@ class Hospital {
 
   remove_records(){
      if (this.id == 3 || this.id == 4) {
-         console.log('\nAccess denied! Only Doctors, Admins, and Receptionists can remove patient');
+         console.log('\nAkses ditolak! Hanya Admin, Dokter dan Resepsionis yang bisa menghapus pasien');
          this.home()
      }else {
-       rl.question('\nEnter patient\'s ID to remove : ', (answer) => {
+       rl.question('\nMasukan ID Pasien untuk menghapus : ', (answer) => {
          this.patients.splice(answer-1,1)
-         console.log(`\nPatient with ID : ${answer} has been removed`)
+         console.log(`\nPasien dengan ID : ${answer} telah dihapus`)
          this.home()
        });
      }
    }
 
   option(){
-      rl.question('\nEnter option:\ninput : ', (answer) => {
+      rl.question('\nMasukan Opsi:\ninput : ', (answer) => {
           switch (answer) {
-              case 'list_patients':
+              case 'daftar-pasien':
                   this.list_patients()
                   break;
 
-              case 'view_records':
+              case 'detail-pasien':
                   this.view_records()
                   break;
 
-              case 'add_records':
+              case 'tambah-pasien':
                   this.add_records()
                   break;
 
-              case 'remove_records':
+              case 'hapus-pasien':
                   this.remove_records()
                   break;
 
             default:
-                console.log("\nincorrect option format");
+                console.log("\nOpsi yang anda masukkan salah");
                 this.option()
           }
       });
